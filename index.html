@@ -1,71 +1,9 @@
 <!DOCTYPE html>
-<html lang="az">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Qalereya</title>
-<style>
-  * { box-sizing: border-box; }
-  body { margin: 0; background: #0f0f10; font-family: system-ui, sans-serif; }
-
-  .gallery { max-width: 820px; margin: 40px auto; padding: 0 12px; }
-
-  /* Böyük şəkil */
-  .main {
-    position: relative;
-    aspect-ratio: 16 / 10;
-    background: #1b1d1f;
-    border-radius: 14px;
-    overflow: hidden;
-  }
-  .main img {
-    width: 100%; height: 100%;
-    object-fit: contain;
-    display: block;
-    transition: opacity .25s ease;
-  }
-  .main img.fade { opacity: 0; }
-
-  /* Sol / sağ oxlar */
-  .arrow {
-    position: absolute; top: 50%; transform: translateY(-50%);
-    width: 42px; height: 42px; border: 0; border-radius: 50%;
-    background: rgba(0,0,0,.55); color: #fff; font-size: 22px;
-    cursor: pointer; display: none;
-  }
-  .arrow:hover { background: rgba(0,0,0,.8); }
-  .arrow:focus-visible { outline: 2px solid #fff; }
-  #left  { left: 12px; }
-  #right { right: 12px; }
-
-  /* Kiçik şəkillər */
-  .thumbs {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
-    gap: 8px;
-    margin-top: 10px;
-  }
-  .thumb {
-    position: relative;
-    aspect-ratio: 4 / 3;
-    border-radius: 10px;
-    overflow: hidden;
-    cursor: pointer;
-    opacity: .6;
-    outline: 2px solid transparent;
-    transition: opacity .2s, outline-color .2s;
-  }
-  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .thumb:hover, .thumb.active { opacity: 1; }
-  .thumb.active { outline-color: #fff; }
-
-  /* Sonuncu şəkildə "+N şəkil" */
-  .thumb .more {
-    position: absolute; inset: 0;
-    display: grid; place-items: center;
-    background: rgba(0,0,0,.6); color: #fff; font-size: 14px; font-weight: 600;
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 <body>
 
@@ -77,87 +15,8 @@
   </div>
   <div class="thumbs" id="thumbs"></div>
 </div>
-
-<script>
-  let images = ['1.jpg', '2.jpg', '3.jpg', '4.jpg'];
-
-  // Neçə kiçik şəkil göstərilsin (qalanı son kartda "+N şəkil" kimi yazılır)
-  const MAX_THUMBS = 9;
-
-  const myimage = document.querySelector("#myimg");
-  const l = document.querySelector("#left");
-  const r = document.querySelector("#right");
-  const thumbsBox = document.querySelector("#thumbs");
-  const gallery = document.querySelector("#gallery");
-
-  let index = 0;            // 0-dan başlayır
-  let timer = null;
-  const DELAY = 3000;
-
-  /* ---- Kiçik şəkilləri yarat ---- */
-  const visible = images.slice(0, MAX_THUMBS);
-  visible.forEach((name, i) => {
-    const t = document.createElement("div");
-    t.className = "thumb";
-    t.innerHTML = `<img src="images/${name}" alt="">`;
-
-    // Son kartda qalan şəkillərin sayı
-    if (i === MAX_THUMBS - 1 && images.length > MAX_THUMBS) {
-      t.insertAdjacentHTML("beforeend",
-        `<div class="more">+${images.length - MAX_THUMBS} şəkil</div>`);
-    }
-
-    // Üzərinə gələndə böyük şəkil dəyişir
-    t.addEventListener("mouseenter", () => show(i));
-    // Telefonda toxunuş üçün
-    t.addEventListener("click", () => show(i));
-
-    thumbsBox.appendChild(t);
-  });
-
-  /* ---- Əsas funksiya: i-ci şəkli göstər ---- */
-  function show(i) {
-    index = i;
-
-    myimage.classList.add("fade");
-    setTimeout(() => {
-      myimage.src = `images/${images[index]}`;
-      myimage.classList.remove("fade");
-    }, 120);
-
-    // Oxların görünüşü
-    l.style.display = index === 0 ? "none" : "block";
-    r.style.display = index === images.length - 1 ? "none" : "block";
-
-    // Aktiv kiçik şəkil
-    document.querySelectorAll(".thumb").forEach((el, k) => {
-      el.classList.toggle("active", k === index);
-    });
-  }
-
-  function left()  { if (index > 0) show(index - 1); }
-  function right() { if (index < images.length - 1) show(index + 1); }
-
-  l.addEventListener("click", left);
-  r.addEventListener("click", right);
-
-  /* ---- Avtomatik slayd ---- */
-  function Slide() {
-    clearInterval(timer);
-    timer = setInterval(() => {
-      show(index + 1 >= images.length ? 0 : index + 1);
-    }, DELAY);
-  }
-
-  function MouseMove() { clearInterval(timer); }
-  function MouseOut()  { Slide(); }
-
-  // Mouse qalereyanın üzərindədirsə dayansın, çıxanda davam etsin
-  gallery.addEventListener("mouseenter", MouseMove);
-  gallery.addEventListener("mouseleave", MouseOut);
-
-  show(0);
-  Slide();
-</script>
+    <script src="index.js">
+ 
+    </script>
 </body>
 </html>
